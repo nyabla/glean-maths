@@ -1,0 +1,14 @@
+@import url("npm:katex/dist/katex.min.css");
+
+.maths-container {
+    padding: 0 2px;
+    resize: none;
+    width: 100%;
+    cursor: text;
+}
+
+textarea:focus + .maths-container {
+    margin-top: 6px;
+    padding-top: 4px;
+    border-top: solid 1px var(--theme-border-colour-weak);
+}

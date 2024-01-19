@@ -1,0 +1,22 @@
+{
+  "name": "glean-maths",
+  "version": "0.1.0",
+  "description": "add maths formatting to glean notes",
+  "scripts": {
+    "build": "npx parcel build manifest.json && cd ./dist && npx web-ext build --overwrite-dest",
+    "clean": "rm -rf ./dist"
+  },
+  "author": "nyabla.net",
+  "license": "MPL-2.0",
+  "devDependencies": {
+    "@parcel/config-webextension": "^2.11.0",
+    "@types/katex": "^0.16.7",
+    "@types/webextension-polyfill": "^0.10.7",
+    "parcel": "^2.11.0",
+    "web-ext": "^7.10.0",
+    "webextension-polyfill": "^0.10.0"
+  },
+  "dependencies": {
+    "katex": "^0.16.9"
+  }
+}
