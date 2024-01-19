@@ -20,6 +20,10 @@ function isViewMode(): boolean {
   return path[lastIndex] === 'view'
 }
 
+function isKatex(element: HTMLElement): boolean {
+  return element.querySelector('.katex') != null
+}
+
 function renderViewMode(records: MutationRecord[], observer: MutationObserver) {
   for (const record of records) {
     for (const addedNode of record.addedNodes) {
@@ -76,7 +80,7 @@ function renderCard(card: Element, change = false) {
     tempContainer.innerText = textarea.value
     katexRender(tempContainer)
 
-    if (tempContainer.innerHTML === textarea.value) {
+    if (!isKatex(tempContainer)) {
       textarea.removeAttribute('data-maths-id')
       textarea.style.display = 'flex'
 
@@ -101,7 +105,7 @@ function renderCard(card: Element, change = false) {
 
   katexRender(container, katexConfig)
 
-  if (container.innerHTML == textarea.value) {
+  if (!isKatex(container)) {
     return
   }
 
