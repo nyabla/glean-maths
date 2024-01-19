@@ -1,13 +1,13 @@
 @import url("npm:katex/dist/katex.min.css");
 
-.maths-container {
+.mathbox {
     padding: 0 2px;
     resize: none;
     width: 100%;
     cursor: text;
 }
 
-textarea:focus + .maths-container {
+textarea:focus + .mathbox {
     margin-top: 6px;
     padding-top: 4px;
     border-top: solid 1px var(--theme-border-colour-weak);

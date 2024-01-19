@@ -25,17 +25,11 @@ function renderViewMode(records: MutationRecord[], observer: MutationObserver) {
     for (const addedNode of record.addedNodes) {
       const selector = `p:not(.${classes.viewMode.extract})`
       const maths = addedNode.parentElement?.querySelectorAll(selector)
-
-      maths?.forEach(node => {
-        console.log(node)
-        console.log(katexRender(node, katexConfig))
-      })
     }
   }
 }
 
 function renderEventMode(records: MutationRecord[], observer: MutationObserver) {
-  console.group("Record Set")
   for (const record of records) {
     for (const addedNode of record.addedNodes) {
       if (addedNode.nodeType !== Node.ELEMENT_NODE) {
@@ -43,63 +37,115 @@ function renderEventMode(records: MutationRecord[], observer: MutationObserver) 
       }
 
       const selector = `.${classes.eventMode.feedItem}`
-      
-      // look i know that addedNode has this  method 
-      // because i check if its an element node
-      const items = addedNode.querySelectorAll(selector)
+      const items = (addedNode as Element).querySelectorAll(selector)
 
-      items.forEach(renderItem);
+      items.forEach(configItem);
     }
   }
-  console.groupEnd()
 }
 
-function renderItem(item: Element) {
-  const comboboxes = item.querySelectorAll(`.${classes.eventMode.combobox}`)
+function configItem(item: Element) {
+  const cards = item.querySelectorAll(`.${classes.eventMode.combobox}`)
   
-  for (const box of comboboxes) {
-    const textarea = box.querySelector('textarea')
+  for (const card of cards) {
+    const textarea = card.querySelector('textarea')
 
     if (textarea === null) {
       continue
     }
 
-    const container = document.createElement('div')
-    container.classList.add("maths-container")
-    container.tabIndex = 0
-    container.innerText = textarea.textContent || ""
-    
-    container.id = crypto.randomUUID()
-    textarea.setAttribute("data-maths-id", container.id)
+    textarea.addEventListener('input', _ => {
+      renderCard(card, true)
+    })
 
-    console.log(textarea, container)
-    katexRender(container, katexConfig)
+    renderCard(card)
+  }
+}
 
-    if (container.innerHTML == (textarea.textContent || "")) continue;
+function renderCard(card: Element, change = false) {
+  const textarea = card.querySelector('textarea')
+  if (textarea === null) {
+    return
+  }
 
+  if (textarea.hasAttribute('data-maths-id')) {
+    const mathsId = textarea.getAttribute('data-maths-id') || ''
+    const container = document.getElementById(mathsId) || new Element()
+    const tempContainer = document.createElement('div')
+
+    tempContainer.innerText = textarea.value
+    katexRender(tempContainer)
+
+    if (tempContainer.innerHTML === textarea.value) {
+      textarea.removeAttribute('data-maths-id')
+      textarea.style.display = 'flex'
+
+      textarea.removeEventListener('focus', textareaFocus)
+      textarea.removeEventListener('focusout', textareaFocusOut)
+      card.removeChild(container)
+
+      return
+    }
+
+    container?.replaceChildren(...tempContainer.childNodes)
+
+    return
+  }
+
+  const container = document.createElement('div')
+  container.classList.add(classes.eventMode.mathbox)
+  container.tabIndex = 0
+  container.innerText = textarea.value
+  
+  container.id = crypto.randomUUID()
+
+  katexRender(container, katexConfig)
+
+  if (container.innerHTML == textarea.value) {
+    return
+  }
+
+  textarea.setAttribute("data-maths-id", container.id)
+
+  if (!change) {
     textarea.style.display = 'none'
+  }
 
-    textarea.addEventListener('focus', _ => {
-      container.tabIndex = -1
-    })
+  textarea.parentElement
+  textarea.addEventListener('focus', textareaFocus)
+  textarea.addEventListener('focusout', textareaFocusOut)
 
-    textarea.addEventListener('focusout', _ => {
-      container.tabIndex = 0
-      textarea.style.display = 'none'
-    })
-
-    container.addEventListener('focus', event => {
-      if (event.relatedTarget != textarea) {
-        textarea.style.display = 'flex'
-        textarea.focus()
-      }
-    })
-
-    container.addEventListener('click', _ => { 
+  container.addEventListener('focus', event => {
+    if (event.relatedTarget != textarea) {
+      textarea.style.display = 'flex'
       textarea.focus()
-    })
+    }
+  })
 
-    box.appendChild(container)
+  container.addEventListener('click', _ => { 
+    textarea.focus()
+  })
+
+  card.appendChild(container)
+}
+
+function textareaFocus(event: FocusEvent) {
+  const textarea = event.target as HTMLTextAreaElement
+  const parent = textarea.parentElement
+  const container = parent?.querySelector<HTMLDivElement>(`.${classes.eventMode.mathbox}`)
+  if (container != null) {
+    container.tabIndex = -1
+  }
+}
+
+function textareaFocusOut(event: FocusEvent) {
+  const textarea = event.target as HTMLTextAreaElement
+  const parent = textarea.parentElement
+  const container = parent?.querySelector<HTMLDivElement>(`.${classes.eventMode.mathbox}`)
+  if (container != null) {
+    container.tabIndex = 0
+    console.log(textarea)
+    textarea.style.display = 'none'
   }
 }
 
