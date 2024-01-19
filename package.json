@@ -1,6 +1,6 @@
 {
   "name": "glean-maths",
-  "version": "0.1.0",
+  "version": "2024.1.0",
   "description": "add maths formatting to glean notes",
   "scripts": {
     "build": "npx parcel build manifest.json && cd ./dist && npx web-ext build --overwrite-dest",

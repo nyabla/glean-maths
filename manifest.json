@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Maths for Glean",
   "description": "Add maths formatting to Glean notes",
-  "version": "0.1.0",
+  "version": "2024.1.0",
   "icons": {
     "64": "icons/icon.png"
   },
