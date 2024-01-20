@@ -27,8 +27,11 @@ function isKatex(element: HTMLElement): boolean {
 function renderViewMode(records: MutationRecord[], observer: MutationObserver) {
   for (const record of records) {
     for (const addedNode of record.addedNodes) {
-      const selector = `p:not(.${classes.viewMode.extract})`
-      const maths = addedNode.parentElement?.querySelectorAll(selector)
+      const selector = `p[data-test="ReadingViewText.text"]`
+      const maybeMaths = addedNode.parentElement?.querySelectorAll(selector)
+      maybeMaths?.forEach(element => {
+        katexRender(element, katexConfig)
+      })
     }
   }
 }
