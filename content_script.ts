@@ -94,7 +94,7 @@ function renderCard(card: Element, change = false) {
       return
     }
 
-    container?.replaceChildren(...tempContainer.childNodes)
+    container.replaceChildren(...tempContainer.childNodes)
 
     return
   }
