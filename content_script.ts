@@ -81,7 +81,7 @@ function renderCard(card: Element, change = false) {
     const tempContainer = document.createElement('div')
 
     tempContainer.innerText = textarea.value
-    katexRender(tempContainer)
+    katexRender(tempContainer, katexConfig)
 
     if (!isKatex(tempContainer)) {
       textarea.removeAttribute('data-maths-id')
