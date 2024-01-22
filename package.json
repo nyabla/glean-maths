@@ -3,8 +3,9 @@
   "version": "2024.1.1",
   "description": "add maths formatting to glean notes",
   "scripts": {
-    "build:dev": "npx parcel build manifest.json --target dev && cd ./dist && npx web-ext build --overwrite-dest",
-    "build:prod": "npx parcel build manifest.json --target prod && cd ./dist && npx web-ext build --overwrite-dest",
+    "build:dev": "npx parcel build manifest.json --target dev && cd ./dist/firefox && npx web-ext build --overwrite-dest",
+    "build:prod": "npx parcel build manifest.json --target prod && cd ./dist/firefox && npx web-ext build --overwrite-dest",
+    "build:chrome": "./buildchrome.sh",
     "clean": "rm -rf dist/",
     "clean:deep": "rm -rf dist/ .parcel-cache/"
   },
@@ -27,11 +28,15 @@
         "inline": false,
         "inlineSources": true
       },
-      "distDir": "dist"
+      "distDir": "dist/firefox"
     },
     "prod": {
       "sourceMap": false,
-      "distDir": "dist"
+      "distDir": "dist/firefox"
+    },
+    "chrome": {
+      "sourceMap": false,
+      "distDir": "dist/chrome"
     }
   }
 }
