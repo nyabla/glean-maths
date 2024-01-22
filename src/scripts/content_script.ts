@@ -1,5 +1,5 @@
 import katexRender from 'katex/dist/contrib/auto-render'
-import katexConfig from './katex-config.json'
+import katexConfig from '../../katex-config.json'
 
 const classes = {
   viewMode: {

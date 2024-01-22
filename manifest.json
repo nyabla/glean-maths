@@ -12,11 +12,11 @@
         "*://app.glean.co/event/*"
       ],
       "js": [
-        "content_script.ts"
+        "src/scripts/content_script.ts"
       ],
       "css" : [
-        "maths.css",
-        "glean-font-override.css"
+        "src/styles/maths.css",
+        "src/styles/glean-font-override.css"
       ]
     }
   ]
